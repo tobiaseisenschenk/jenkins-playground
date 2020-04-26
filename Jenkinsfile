@@ -1,15 +1,12 @@
 pipeline {
 	agent any
 	stages {
-		stage('Build') {
+		stage('Upload to S3') {
 			steps {
 				sh 'echo "Hello Jenkins"'
-				sh '''
-					withAWS(region:'us-east-2',credentials:'aws-static') {
-						s3Upload(file:'index.html',bucket:'jenkins-playground')
-					}
-
-				'''
+				withAWS(region:'us-east-2',credentials:'aws-static') {
+						s3Upload(pathStyleAccessEnabled:true,payloadSigningEnabled:true,file:'index.html',bucket:'jenkins-playground')
+				}
 			}
 		}
 	}
