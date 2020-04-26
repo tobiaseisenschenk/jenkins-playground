@@ -3,10 +3,11 @@ pipeline {
 	stages {
 		stage('Build') {
 			steps {
-				sh 'echo "Hello World"'
+				sh 'echo "Hello Jenkins"'
 				sh '''
-					echo "Multiline shell steps works"
-					ls -lah
+					withAWS(region:'us-east-2',credentials:'aws-static') {
+						s3Upload(file:'index.html',bucket:'jenkins-playground')
+					}
 
 				'''
 			}
